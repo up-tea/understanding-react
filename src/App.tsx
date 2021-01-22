@@ -1,25 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom"
 import './App.css';
+import UseCallbackPage from './components/pages/UseCallbackPage';
+import UseEffectPage from './components/pages/UseEffectPage';
+import UseMemoPage from './components/pages/UseMemoPage';
+import UseRefPage from './components/pages/UseRefPage';
+import UseStatePage from './components/pages/UseStatePage';
+import CustomHookPage from './components/pages/CustomHookPage';
+import ErrorHandlePage from './components/pages/ErrorHandlePage';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Router>
+        <Route path="/state" component={UseStatePage}></Route>
+        <Route path="/ref" component={UseRefPage}></Route>
+        <Route path="/effect" component={UseEffectPage}></Route>
+        <Route path="/memo" component={UseMemoPage}></Route>
+        <Route path="/callback" component={UseCallbackPage}></Route>
+        <Route path="/custom-hook" component={CustomHookPage}></Route>
+        <Route path="/error-handle" component={ErrorHandlePage}></Route>
+        <Route path="/" exact>
+          <Redirect to="/state" />
+        </Route>
+      </Router>
+    </>
   );
 }
 
