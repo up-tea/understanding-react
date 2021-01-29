@@ -4,8 +4,9 @@ import { useState, useEffect, useRef, useCallback } from 'react'
  * 
  * threshould bottomからどの位のpx数をbottom判定に加算するかのarg
  */
-const useScroll = ({ threshould = 450, smooth = true } = {}) => {
+const useScroll = ({ TopThreshould = 250, BottomThreshould = 250, smooth = true } = {}) => {
   const [isAtBottom, setIsAtBottom] = useState(false)
+  const [isAtTop, setIsAtTop] = useState(false)
   const ref = useRef<Window>(window)
 
   /* useCallbackはパフォーマンス向上のためのhook
@@ -38,17 +39,22 @@ const useScroll = ({ threshould = 450, smooth = true } = {}) => {
   const handleScroll = useCallback(() => {
     if (ref.current === null) return
     let isAtBottom
+    let isAtTop
+
     const currentScrollTop = window.innerHeight + window.scrollY
-    isAtBottom = currentScrollTop >= document.documentElement.offsetHeight - threshould
+    isAtBottom = currentScrollTop >= document.documentElement.offsetHeight - BottomThreshould
+    isAtTop = window.scrollY >= TopThreshould && !isAtBottom
     setIsAtBottom(isAtBottom)
-  }, [threshould])
+    setIsAtTop(isAtTop)
+    console.log(currentScrollTop)
+  }, [TopThreshould, BottomThreshould])
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [handleScroll])
 
-  return { isAtBottom, handleScroll, goTop, goBottom , ref}
+  return { isAtBottom, isAtTop, handleScroll, goTop, goBottom , ref}
 }
 
 
